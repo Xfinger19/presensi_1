@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Profil - TechPresence{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h1><i class="fas fa-user-cog"></i> Profil Saya</h1>
+        <p>Informasi akun dan data pribadi</p>
+    </div>
+
+    <div class="profile-content">
+        <div class="profile-card">
+            <div class="profile-avatar">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            
+            <div class="profile-info">
+                <div class="info-group">
+                    <label><i class="fas fa-id-card"></i> Nama Lengkap</label>
+                    <p>{{ user_data.full_name or session.full_name }}</p>
+                </div>
+                
+                <div class="info-group">
+                    <label><i class="fas fa-user"></i> Username</label>
+                    <p>{{ user_data.username or session.username }}</p>
+                </div>
+                
+                <div class="info-group">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <p>{{ user_data.email or 'rafli@company.com' }}</p>
+                </div>
+                
+                <div class="info-group">
+                    <label><i class="fas fa-briefcase"></i> Posisi</label>
+                    <p>{{ user_data.position or session.position }}</p>
+                </div>
+                
+                <div class="info-group">
+                    <label><i class="fas fa-building"></i> Departemen</label>
+                    <p>{{ user_data.department or session.department }}</p>
+                </div>
+                
+                <div class="info-group">
+                    <label><i class="fas fa-shield-alt"></i> Role</label>
+                    <p><span class="role-badge {{ user_data.role or session.role }}">{{ (user_data.role or session.role)|title }}</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-stats">
+            <div class="stat-item">
+                <i class="fas fa-laptop-code"></i>
+                <div class="stat-text">
+                    <h3>Teknologi</h3>
+                    <p>Perusahaan IT</p>
+                </div>
+            </div>
+            
+            <div class="stat-item">
+                <i class="fas fa-clock"></i>
+                <div class="stat-text">
+                    <h3>Flexible Time</h3>
+                    <p>Waktu kerja fleksibel</p>
+                </div>
+            </div>
+            
+            <div class="stat-item">
+                <i class="fas fa-network-wired"></i>
+                <div class="stat-text">
+                    <h3>Remote Work</h3>
+                    <p>Support WFH</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

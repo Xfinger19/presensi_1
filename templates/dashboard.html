@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TechPresence{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <div class="welcome-text">
+            <h1>Selamat Datang, {{ session.full_name }}! 👋</h1>
+            <p>{{ session.position }} - {{ session.department }}</p>
+        </div>
+        <div class="current-time">
+            <div id="live-clock"></div>
+            <div id="live-date"></div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card primary">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ monthly_stats.total }}</h3>
+                <p>Kehadiran Bulan Ini</p>
+            </div>
+        </div>
+        
+        <div class="stat-card success">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h3>
+                    {% if today_attendance and today_attendance.check_in %}
+                        {% if today_attendance.check_out %}Selesai{% else %}Sedang Bekerja{% endif %}
+                    {% else %}Belum Check-in{% endif %}
+                </h3>
+                <p>Status Hari Ini</p>
+            </div>
+        </div>
+        
+        <div class="stat-card warning">
+            <div class="stat-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ session.department }}</h3>
+                <p>Departemen</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions-section">
+        <h2>Quick Actions</h2>
+        <div class="actions-grid">
+            <a href="{{ url_for('attendance') }}" class="action-card check-in">
+                <i class="fas fa-fingerprint"></i>
+                <span>Presensi Hari Ini</span>
+            </a>
+            <a href="{{ url_for('attendance') }}" class="action-card history">
+                <i class="fas fa-history"></i>
+                <span>Riwayat Presensi</span>
+            </a>
+            <a href="{{ url_for('profile') }}" class="action-card profile">
+                <i class="fas fa-user-cog"></i>
+                <span>Profil Saya</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="recent-section">
+        <h2>Riwayat 7 Hari Terakhir</h2>
+        <div class="attendance-table">
+            <div class="table-header">
+                <div>Tanggal</div>
+                <div>Check-in</div>
+                <div>Check-out</div>
+                <div>Status</div>
+            </div>
+            {% for record in recent_attendance %}
+            <div class="table-row">
+                <div>{{ record.date.strftime('%d/%m/%Y') }}</div>
+                <div>{{ record.check_in.strftime('%H:%M') if record.check_in else '-' }}</div>
+                <div>{{ record.check_out.strftime('%H:%M') if record.check_out else '-' }}</div>
+                <div><span class="status-badge {{ record.status|lower }}">{{ record.status }}</span></div>
+            </div>
+            {% else %}
+            <div class="table-row">
+                <div colspan="4" style="text-align: center;">Tidak ada data presensi</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

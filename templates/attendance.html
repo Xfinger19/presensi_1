@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Presensi - TechPresence{% endblock %}
+
+{% block content %}
+<div class="attendance-container">
+    <div class="attendance-header">
+        <h1><i class="fas fa-fingerprint"></i> Sistem Presensi</h1>
+        <p>Presensi harian untuk karyawan {{ session.department }}</p>
+    </div>
+
+    <div class="today-card">
+        <h3>Presensi Hari Ini ({{ today.strftime('%d %B %Y') }})</h3>
+        <div class="attendance-status">
+            {% if today_attendance %}
+            <div class="status-info">
+                <div class="time-record">
+                    <div class="time-item">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Check-in: {{ today_attendance.check_in.strftime('%H:%M') if today_attendance.check_in else 'Belum' }}</span>
+                    </div>
+                    <div class="time-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Check-out: {{ today_attendance.check_out.strftime('%H:%M') if today_attendance.check_out else 'Belum' }}</span>
+                    </div>
+                </div>
+                <div class="status-badge {{ today_attendance.status|lower }}">
+                    {{ today_attendance.status }}
+                </div>
+            </div>
+            {% else %}
+            <div class="no-attendance">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>Belum melakukan presensi hari ini</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="attendance-actions">
+        <form method="POST" class="action-form">
+            <div class="action-buttons">
+                {% if not today_attendance or not today_attendance.check_in %}
+                <button type="submit" name="action" value="check_in" class="btn check-in-btn">
+                    <i class="fas fa-fingerprint"></i> Check-in
+                </button>
+                {% endif %}
+                
+                {% if today_attendance and today_attendance.check_in and not today_attendance.check_out %}
+                <button type="submit" name="action" value="check_out" class="btn check-out-btn">
+                    <i class="fas fa-door-open"></i> Check-out
+                </button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    <div class="history-section">
+        <h3>Riwayat 10 Hari Terakhir</h3>
+        <div class="history-table">
+            <div class="table-header">
+                <div>Tanggal</div>
+                <div>Check-in</div>
+                <div>Check-out</div>
+                <div>Status</div>
+            </div>
+            {% for record in attendance_history %}
+            <div class="table-row">
+                <div>{{ record.date.strftime('%d/%m/%Y') }}</div>
+                <div>{{ record.check_in.strftime('%H:%M') if record.check_in else '-' }}</div>
+                <div>{{ record.check_out.strftime('%H:%M') if record.check_out else '-' }}</div>
+                <div><span class="status-badge {{ record.status|lower }}">{{ record.status }}</span></div>
+            </div>
+            {% else %}
+            <div class="table-row">
+                <div colspan="4" style="text-align: center;">Tidak ada riwayat presensi</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
