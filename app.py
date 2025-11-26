@@ -9,10 +9,10 @@ app.secret_key = 'rafli_secret_key_2024'
 def get_db():
     try:
         conn = mysql.connector.connect(
-            host='localhost',
-            user='root',
+            host='127.0.0.1',
+            user='rafli',
             password='saputra19',
-            database='attendance_system'
+            database='presensi_db'
         )
         return conn
     except Exception as e:
@@ -216,11 +216,11 @@ def logout():
 
 if __name__ == '__main__':
     print("🚀 Starting Flask Server...")
-    print("📍 http://localhost:5000")
+    print("📍 http://localhost:5600")
     print("👤 Test Accounts:")
     print("   Username: rafli")
     print("   Password: rafli123")
     print("   Username: admin")
     print("   Password: admin123")
     print("-" * 40)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5600)
